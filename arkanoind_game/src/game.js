@@ -532,7 +532,7 @@ function drawGame() {
 }
 
 function drawWelcome() {
-  drawText("Arkark", "#d9effc", "50px Saira Stencil One", 120, 275);
+  drawText("Arkanoid", "#d9effc", "50px Saira Stencil One", 95, 275);
 }
 
 function drawGameOver() {

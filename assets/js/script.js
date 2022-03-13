@@ -72,6 +72,7 @@ window.onload = function () {
   //     document.querySelector(".main_preloader").classList.add("preloader-none");
   //     setTimeout(() => {
   //       document.querySelector(".main_preloader").style.display = "none";
+  //       document.querySelector(".main_preloader").remove();
   //     }, 5000);
   //   });
 };
