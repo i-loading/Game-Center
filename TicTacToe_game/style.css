@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka&display=swap');
+
+* {
+  font-family: 'Fredoka', sans-serif;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+:focus,:active {outline: none;}
+a:focus,a:active {outline: none;}
+nav,footer,header,aside {display: block;}
+html,body {
+  height: 100%;
+  width: 100%;
+  font-size: 100%;
+  line-height: 1;
+  font-size: 14px;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+input,button,textarea {font-family: inherit;}
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul{list-style: none;}
+img{vertical-align: top;}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
+
+h1 {
+  font-weight: bold;
+  font-size: 45px;
+}
+h2 {
+  font-size: 30px;
+  font-weight: bold;
+}
+body {
+  background: rgb(255,137,70);
+  background: linear-gradient(180deg, rgba(255,137,70,1) 0%, rgba(255,213,139,1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+section {
+  text-align: center;
+}
+.game--container {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  width: 306px;
+  margin: 50px auto;
+}
+.cell {
+  width: 100px;
+  height: 100px;
+  box-shadow: 0 0 0 1px black;
+  border: 1px solid black;
+  cursor: pointer;
+  line-height: 100px;
+  font-size: 60px;
+}
+.game--restart {
+  background: none;
+  outline: none;
+  border: 1px solid black;
+  display: inline-block;
+  margin-top: 30px;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-style: italic;
+  box-shadow: 0px 5px 5px -2px black;
+}

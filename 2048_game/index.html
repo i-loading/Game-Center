@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>2048</title>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1><span>2</span><span>0</span><span>4</span><span>8</span></h1>
+    </div>
+  </header>
+  <div class="container">
+    <div class="scores">
+      <div class="score-container best-score">
+        best:
+        <div class="score">
+          <div id="bestScore">0</div>
+        </div>
+      </div>
+      <div class="score-container">
+        score:
+        <div class="score">
+          <div id="score">0</div>
+          <div class="add" id="add"></div>
+        </div>
+      </div>
+    </div>
+    <div class="game">
+      <div id="tile-container" class="tile-container"></div>
+      <div class="end" id="end">Game Over<div class="monkey">🙈</div><button
+          class="btn not-recommended__item js-restart-btn" id="try-again">Try Again</button></div>
+    </div>
+
+    <div class="not-recommended">
+      <button class="btn not-recommended__item js-restart-btn" id="restart">Restart Game</button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
