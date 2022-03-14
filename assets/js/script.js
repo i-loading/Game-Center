@@ -34,16 +34,16 @@ function randomIntFromInterval(min, max) {
 const video = document.querySelector(".background");
 let result = randomIntFromInterval(1, 3);
 
-// let animData = {
-//   wrapper: document.querySelector("#animationWindow"),
-//   animType: "svg",
-//   loop: true,
-//   prerender: true,
-//   autoplay: true,
-//   path: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/LEGO_loader.json",
-// };
-// let anim = bodymovin.loadAnimation(animData);
-// anim.setSpeed(3.4);
+let animData = {
+  wrapper: document.querySelector("#animationWindow"),
+  animType: "svg",
+  loop: true,
+  prerender: true,
+  autoplay: true,
+  path: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/LEGO_loader.json",
+};
+let anim = bodymovin.loadAnimation(animData);
+anim.setSpeed(3.4);
 
 window.onload = function () {
   if (result === 1) {
@@ -62,17 +62,17 @@ window.onload = function () {
     });
   });
 
-  // setTimeout(() => {
-  //   document.querySelector(".main_preloader button").style.opacity = "1";
-  // }, 3000);
-  // document
-  //   .querySelector(".main_preloader button")
-  //   .addEventListener("click", (event) => {
-  //     event.target.innerText = "Loading...";
-  //     document.querySelector(".main_preloader").classList.add("preloader-none");
-  //     setTimeout(() => {
-  //       document.querySelector(".main_preloader").style.display = "none";
-  //       document.querySelector(".main_preloader").remove();
-  //     }, 5000);
-  //   });
+  setTimeout(() => {
+    document.querySelector(".main_preloader button").style.opacity = "1";
+  }, 3000);
+  document
+    .querySelector(".main_preloader button")
+    .addEventListener("click", (event) => {
+      event.target.innerText = "Loading...";
+      document.querySelector(".main_preloader").classList.add("preloader-none");
+      setTimeout(() => {
+        document.querySelector(".main_preloader").style.display = "none";
+        document.querySelector(".main_preloader").remove();
+      }, 5000);
+    });
 };

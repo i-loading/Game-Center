@@ -7,5 +7,7 @@ let sounds = {
 };
 
 function playSound(name) {
-  new Audio(sounds[name]).play();
+  let audio = new Audio(sounds[name]);
+  audio.volume = 0.1;
+  audio.play();
 }
