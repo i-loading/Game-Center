@@ -78,51 +78,76 @@ $(document).ready(function () {
   $(".owl-prev").html('<i class="fa fa-chevron-left" aria-hidden="true"></i>');
   $(".owl-next").html('<i class="fa fa-chevron-right" aria-hidden="true"></i>');
 
-  $(".center video").css("filter", "grayscale(0)");
   const owlItems = document.querySelectorAll(".owl-item");
+  const owlItemsA = document.querySelectorAll(".owl-item a");
+  function onMouseEnter(node) {
+    if (node.tagName !== "IMG") {
+      node.play();
+    }
+  }
+  function onMouseLeave(node) {
+    if (node.tagName !== "IMG") {
+      node.pause();
+    }
+  }
+  // Постоянная прослушка наведения мыши
+  owlItemsA.forEach((item) => {
+    if (item.parentElement.classList.contains("center")) {
+      item.childNodes[1].style = `filter: grayscale(0)`;
+      item.childNodes[2].style = `filter: grayscale(0)`;
+    }
+    item.addEventListener("mouseover", () => {
+      item.childNodes[1].style = `filter: grayscale(0)`;
+      item.childNodes[3].style = `filter: grayscale(0)`;
+      onMouseEnter(item.childNodes[1]);
+    });
+    item.addEventListener("mouseout", () => {
+      onMouseLeave(item.childNodes[1]);
+      if (!item.parentElement.classList.contains("center")) {
+        item.childNodes[1].style = `filter: grayscale(100)`;
+        item.childNodes[3].style = `filter: grayscale(100)`;
+      }
+    });
+  });
+
+  // Прослушка при прокручивании мыши
   owl.on("mousewheel", ".owl-stage", function (e) {
     if (e.originalEvent.wheelDelta > 0) owl.trigger("prev.owl");
     else owl.trigger("next.owl");
 
     owlItems.forEach((elem) => {
-      if (elem.classList.contains("center"))
+      if (elem.classList.contains("center")) {
         elem.children[0].children[0].style = `filter: grayscale(0)`;
-      else elem.children[0].children[0].style = `filter: grayscale(100)`;
+        elem.children[0].children[1].style = `filter: grayscale(0)`;
+      } else {
+        elem.children[0].children[0].style = `filter: grayscale(100)`;
+        elem.children[0].children[1].style = `filter: grayscale(100)`;
+      }
     });
-
     e.preventDefault();
   });
 
+  // Прослушка при нажатии на стрелки
   $(".owl-prev").on("click", function (e) {
     owlItems.forEach((elem) => {
-      if (elem.classList.contains("center"))
+      if (elem.classList.contains("center")) {
         elem.children[0].children[0].style = `filter: grayscale(0)`;
-      else elem.children[0].children[0].style = `filter: grayscale(100)`;
+        elem.children[0].children[1].style = `filter: grayscale(0)`;
+      } else {
+        elem.children[0].children[0].style = `filter: grayscale(100)`;
+        elem.children[0].children[1].style = `filter: grayscale(100)`;
+      }
     });
   });
   $(".owl-next").on("click", function (e) {
     owlItems.forEach((elem) => {
-      if (elem.classList.contains("center"))
+      if (elem.classList.contains("center")) {
         elem.children[0].children[0].style = `filter: grayscale(0)`;
-      else elem.children[0].children[0].style = `filter: grayscale(100)`;
+        elem.children[0].children[1].style = `filter: grayscale(0)`;
+      } else {
+        elem.children[0].children[0].style = `filter: grayscale(100)`;
+        elem.children[0].children[1].style = `filter: grayscale(100)`;
+      }
     });
-  });
-});
-
-const gamePreviews = document.querySelectorAll(".item video");
-function onMouseEnter(node) {
-  node.play();
-}
-function onMouseLeave(node) {
-  node.pause();
-}
-gamePreviews.forEach((preview) => {
-  preview.addEventListener("mouseenter", () => {
-    onMouseEnter(preview);
-    this.removeEventListener("mouseenter", onMouseLeave);
-  });
-  preview.addEventListener("mouseleave", () => {
-    onMouseLeave(preview);
-    this.removeEventListener("mouseleave", onMouseEnter);
   });
 });
