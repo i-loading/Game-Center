@@ -94,7 +94,7 @@ $(document).ready(function () {
   owlItemsA.forEach((item) => {
     if (item.parentElement.classList.contains("center")) {
       item.childNodes[1].style = `filter: grayscale(0)`;
-      item.childNodes[2].style = `filter: grayscale(0)`;
+      item.childNodes[3].style = `filter: grayscale(0)`;
     }
     item.addEventListener("mouseover", () => {
       item.childNodes[1].style = `filter: grayscale(0)`;
