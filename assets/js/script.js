@@ -19,11 +19,12 @@ const preloader = document.querySelector(".main_preloader");
 const preloaderBtn = document.querySelector(".main_preloader button");
 const loaded = window.localStorage.getItem("isLoaded") || true;
 
+// Preloader runs once
 if (loaded && window.localStorage.getItem("isLoaded") !== "false") {
   setTimeout(() => {
     preloaderBtn.style.opacity = "1";
   }, 3000);
-  
+
   preloaderBtn.addEventListener("click", (event) => {
     event.target.innerText = "Loading...";
     preloader.classList.add("preloader-none");
@@ -36,6 +37,7 @@ if (loaded && window.localStorage.getItem("isLoaded") !== "false") {
   preloader.style.display = "none";
 }
 
+// On page load
 window.onload = function () {
   if (result === 1) video.src = video.src.replace("bg.mp4", "bg.mp4");
   else if (result === 2) video.src = video.src.replace("bg.mp4", "bg1.mp4");
@@ -56,7 +58,7 @@ $(document).ready(function () {
   owl.owlCarousel({
     loop: true,
     center: true,
-    margin: 50,
+    // margin: 50,
     nav: true,
     smartSpeed: 600,
     dots: false,
@@ -64,10 +66,11 @@ $(document).ready(function () {
       0: {
         items: 1,
       },
-      1280: {
+      1150: {
         items: 2,
+        center: false,
       },
-      1920: {
+      1710: {
         items: 3,
       },
     },
@@ -80,9 +83,10 @@ $(document).ready(function () {
   owl.on("mousewheel", ".owl-stage", function (e) {
     if (e.originalEvent.wheelDelta > 0) owl.trigger("prev.owl");
     else owl.trigger("next.owl");
-    
-    owlItems.forEach(elem => {
-      if(elem.classList.contains("center")) elem.children[0].children[0].style = `filter: grayscale(0)`;
+
+    owlItems.forEach((elem) => {
+      if (elem.classList.contains("center"))
+        elem.children[0].children[0].style = `filter: grayscale(0)`;
       else elem.children[0].children[0].style = `filter: grayscale(100)`;
     });
 
@@ -90,15 +94,35 @@ $(document).ready(function () {
   });
 
   $(".owl-prev").on("click", function (e) {
-    owlItems.forEach(elem => {
-      if(elem.classList.contains("center")) elem.children[0].children[0].style = `filter: grayscale(0)`;
+    owlItems.forEach((elem) => {
+      if (elem.classList.contains("center"))
+        elem.children[0].children[0].style = `filter: grayscale(0)`;
       else elem.children[0].children[0].style = `filter: grayscale(100)`;
     });
   });
   $(".owl-next").on("click", function (e) {
-    owlItems.forEach(elem => {
-      if(elem.classList.contains("center")) elem.children[0].children[0].style = `filter: grayscale(0)`;
+    owlItems.forEach((elem) => {
+      if (elem.classList.contains("center"))
+        elem.children[0].children[0].style = `filter: grayscale(0)`;
       else elem.children[0].children[0].style = `filter: grayscale(100)`;
     });
+  });
+});
+
+const gamePreviews = document.querySelectorAll(".item video");
+function onMouseEnter(node) {
+  node.play();
+}
+function onMouseLeave(node) {
+  node.pause();
+}
+gamePreviews.forEach((preview) => {
+  preview.addEventListener("mouseenter", () => {
+    onMouseEnter(preview);
+    this.removeEventListener("mouseenter", onMouseLeave);
+  });
+  preview.addEventListener("mouseleave", () => {
+    onMouseLeave(preview);
+    this.removeEventListener("mouseleave", onMouseEnter);
   });
 });
