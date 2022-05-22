@@ -64,6 +64,11 @@ main {
 .owl-stage-outer {
   max-height: 45vh;
 }
+@media screen and (max-height: 850px){
+  .owl-stage-outer {
+    max-height: 50vh;
+  }
+}
 .main-caruosel {  
   max-width: 85vw;
   position: relative;
@@ -111,7 +116,7 @@ main {
   }
 }
 .item:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   cursor: pointer;
 }
 i::before {
@@ -227,6 +232,9 @@ i::before {
     transform: translate(-50%, 19vh);
     font-size: 35px;
     padding: 10px 20px;
+  }
+  .main_preloader button:hover {
+    transform: translate(-50%, 19vh) scale(1.05);
   }
 }
 
