@@ -20,12 +20,15 @@ const preloaderBtn = document.querySelector(".main_preloader button");
 const loaded = sessionStorage.getItem("preloaderShown") || true;
 
 // Check if the preloader has been shown before
-if (sessionStorage.getItem("preloaderShown") && loaded) {
-  // Show the preloader
-  document.getElementById("animationWindow").style.display = "none";
-}
+// if (sessionStorage.getItem("preloaderShown") && loaded) {
+//   // Show the preloader
+//   document.getElementById("animationWindow").style.display = "none";
+// }
 
 document.addEventListener("DOMContentLoaded", function () {
+  const password = document.getElementById("passwordField").value;
+  const submitButton = document.getElementById("submitButton");
+
   // Function to check if all media are loaded
   function areAllMediaLoaded() {
     // Check if all images are loaded
@@ -40,40 +43,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return allImagesLoaded && allVideosLoaded;
   }
-  // Function to handle password submission
-  function handlePasswordSubmission() {
-    const password = document.getElementById("passwordField").value;
-    const submitButton = document.getElementById("submitButton");
-    // Check if the password is correct
-    if (password === "ukrsurt") {
-      // Check if all media are loaded
-      if (areAllMediaLoaded()) {
-        // Fade out the preloader gradually
-        submitButton.disabled = false;
-        fadeOutPreloader();
-      } else {
-        // If media are not loaded, wait for them to load
-        submitButton.disabled = true;
-        document.addEventListener("load", function () {
-          if (areAllMediaLoaded()) {
-            submitButton.disabled = false;
-            fadeOutPreloader();
-          }
-        });
-      }
 
-      // Enable the submit button
-      document.getElementById("submitButton").disabled = false;
-      document.getElementById("submitButton").textContent = "Loading...";
+  function handleInput(event) {
+    if (event.target.value === "ukrsurt") submitButton.disabled = false;
+    else submitButton.disabled = true;
+  }
+
+  function handleClick() {
+    if (areAllMediaLoaded()) {
+      submitButton.textContent = "Loading...";
+      fadeOutPreloader();
     }
   }
 
   // Function to fade out the preloader gradually
   function fadeOutPreloader() {
-    let preloader = document.getElementById("animationWindow");
-    let opacity = 1;
+    var preloader = document.getElementById("animationWindow");
+    var opacity = 1;
 
-    let fadeOutInterval = setInterval(function () {
+    var fadeOutInterval = setInterval(function () {
       if (opacity > 0) {
         opacity -= 0.05;
         preloader.style.opacity = opacity;
@@ -87,22 +75,102 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 50);
   }
 
-  // Enable the submit button when the password is correct
+  // Enable the submit button when the password is correct and all media are loaded
   document
     .getElementById("passwordField")
-    .addEventListener("input", function () {
-      const submitButton = document.getElementById("submitButton");
-      console.log(this.value);
-      if (this.value.trim() === "ukrsurt" && areAllMediaLoaded()) {
-        submitButton.disabled = this.value.trim() !== "ukrsurt";
-      }
-    });
+    .addEventListener("input", (event) => handleInput(event));
 
   // Handle submit button click
   document
     .getElementById("submitButton")
-    .addEventListener("click", handlePasswordSubmission);
+    .addEventListener("click", handleClick);
+
+  // Check if the preloader has been shown before
+  if (sessionStorage.getItem("preloaderShown")) {
+    // Hide the preloader if it has been shown before
+    document.getElementById("animationWindow").style.display = "none";
+  }
 });
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   // Function to check if all media are loaded
+//   function areAllMediaLoaded() {
+//     // Check if all images are loaded
+//     const images = document.querySelectorAll("img");
+//     const allImagesLoaded = Array.from(images).every((img) => img.complete);
+
+//     // Check if all videos are loaded
+//     const videos = document.querySelectorAll("video");
+//     const allVideosLoaded = Array.from(videos).every(
+//       (video) => video.readyState >= 3
+//     );
+
+//     return allImagesLoaded && allVideosLoaded;
+//   }
+
+//   // Function to handle password submission
+//   function handlePasswordSubmission() {
+//     const password = document.getElementById("passwordField").value;
+//     const submitButton = document.getElementById("submitButton");
+//     // Check if the password is correct
+//     if (password === "ukrsurt") {
+//       // Check if all media are loaded
+//       if (areAllMediaLoaded()) {
+//         // Fade out the preloader gradually
+//         submitButton.disabled = false;
+//         fadeOutPreloader();
+//       } else {
+//         // If media are not loaded, wait for them to load
+//         submitButton.disabled = true;
+//         document.addEventListener("load", function () {
+//           if (areAllMediaLoaded()) {
+//             submitButton.disabled = false;
+//             fadeOutPreloader();
+//           }
+//         });
+//       }
+
+//       // Enable the submit button
+//       document.getElementById("submitButton").disabled = false;
+//       document.getElementById("submitButton").textContent = "Loading...";
+//     }
+//   }
+
+//   // Function to fade out the preloader gradually
+//   function fadeOutPreloader() {
+//     let preloader = document.getElementById("animationWindow");
+//     let opacity = 1;
+
+//     let fadeOutInterval = setInterval(function () {
+//       if (opacity > 0) {
+//         opacity -= 0.05;
+//         preloader.style.opacity = opacity;
+//       } else {
+//         clearInterval(fadeOutInterval);
+//         preloader.style.display = "none"; // Hide the preloader
+
+//         // Mark that the preloader has been shown
+//         sessionStorage.setItem("preloaderShown", "true");
+//       }
+//     }, 50);
+//   }
+
+//   // Enable the submit button when the password is correct
+//   document
+//     .getElementById("passwordField")
+//     .addEventListener("input", function () {
+//       const submitButton = document.getElementById("submitButton");
+//       console.log(this.value);
+//       if (this.value.trim() === "ukrsurt" && areAllMediaLoaded()) {
+//         submitButton.disabled = this.value.trim() !== "ukrsurt";
+//       }
+//     });
+
+//   // Handle submit button click
+//   document
+//     .getElementById("submitButton")
+//     .addEventListener("click", handlePasswordSubmission);
+// });
 
 // Function to toggle password visibility
 function togglePasswordVisibility() {
