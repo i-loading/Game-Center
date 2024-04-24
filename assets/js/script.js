@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Enable the submit button when the password is correct
-  document
+  window.onload = document
     .getElementById("passwordField")
     .addEventListener("input", function () {
       const submitButton = document.getElementById("submitButton");
