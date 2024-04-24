@@ -92,7 +92,10 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("passwordField")
     .addEventListener("input", function () {
       const submitButton = document.getElementById("submitButton");
-      submitButton.disabled = this.value.trim() !== "ukrsurt";
+      console.log(this.value);
+      if (this.value.trim() === "ukrsurt" && areAllMediaLoaded()) {
+        submitButton.disabled = this.value.trim() !== "ukrsurt";
+      }
     });
 
   // Handle submit button click
