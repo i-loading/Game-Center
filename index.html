@@ -116,7 +116,19 @@
 
     <div id="animationWindow" class="main_preloader">
       <h1>Welcome, to <span>The Game Center!</span></h1>
-      <button>Ready to play?</button>
+      <div class="input_ctrl">
+        <div class="password-container">
+          <input
+            type="password"
+            id="passwordField"
+            placeholder="Enter password"
+          />
+          <span class="toggle-password" onclick="togglePasswordVisibility()">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </span>
+        </div>
+        <button id="submitButton" disabled>Ready to play?</button>
+      </div>
     </div>
 
     <main>

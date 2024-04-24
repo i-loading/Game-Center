@@ -17,28 +17,87 @@ anim.setSpeed(3.4);
 
 const preloader = document.querySelector(".main_preloader");
 const preloaderBtn = document.querySelector(".main_preloader button");
-const loaded = window.localStorage.getItem("isLoaded") || true;
+const loaded = sessionStorage.getItem("preloaderShown") || true;
 
-// Preloader runs once
-if (loaded && window.localStorage.getItem("isLoaded") !== "false") {
-  setTimeout(() => {
-    // preloaderBtn.disabled = true;
-  }, 3000);
-
-  preloaderBtn.addEventListener("click", (event) => {
-    event.target.innerText = "Loading...";
-    preloader.classList.add("preloader-none");
-    setTimeout(() => {
-      preloader.style.display = "none";
-      window.localStorage.setItem("isLoaded", false);
-    }, 5000);
-  });
-} else if (window.localStorage.getItem("isLoaded") === "false") {
-  preloader.style.display = "none";
+// Check if the preloader has been shown before
+if (sessionStorage.getItem("preloaderShown") && loaded) {
+  // Show the preloader
+  document.getElementById("animationWindow").style.display = "none";
 }
 
-// On page load
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", function () {
+  // Function to check if all media are loaded
+  function areAllMediaLoaded() {
+    // Check if all images are loaded
+    const images = document.querySelectorAll("img");
+    const allImagesLoaded = Array.from(images).every((img) => img.complete);
+
+    // Check if all videos are loaded
+    const videos = document.querySelectorAll("video");
+    const allVideosLoaded = Array.from(videos).every(
+      (video) => video.readyState >= 3
+    );
+
+    return allImagesLoaded && allVideosLoaded;
+  }
+
+  // Function to handle password submission
+  function handlePasswordSubmission() {
+    const password = document.getElementById("passwordField").value;
+
+    // Check if the password is correct
+    if (password === "a") {
+      // Check if all media are loaded
+      if (areAllMediaLoaded()) {
+        // Fade out the preloader gradually
+        fadeOutPreloader();
+      } else {
+        // If media are not loaded, wait for them to load
+        document.addEventListener("load", function () {
+          if (areAllMediaLoaded()) {
+            fadeOutPreloader();
+          }
+        });
+      }
+
+      // Enable the submit button
+      document.getElementById("submitButton").disabled = false;
+    }
+  }
+
+  // Function to fade out the preloader gradually
+  function fadeOutPreloader() {
+    let preloader = document.getElementById("animationWindow");
+    let opacity = 1;
+
+    let fadeOutInterval = setInterval(function () {
+      if (opacity > 0) {
+        opacity -= 0.05;
+        preloader.style.opacity = opacity;
+      } else {
+        clearInterval(fadeOutInterval);
+        preloader.style.display = "none"; // Hide the preloader
+
+        // Mark that the preloader has been shown
+        sessionStorage.setItem("preloaderShown", "true");
+      }
+    }, 50);
+  }
+
+  // Enable the submit button when the password is correct
+  document
+    .getElementById("passwordField")
+    .addEventListener("input", function () {
+      const submitButton = document.getElementById("submitButton");
+      submitButton.disabled = this.value.trim() !== "a";
+    });
+
+  // Handle submit button click
+  document
+    .getElementById("submitButton")
+    .addEventListener("click", handlePasswordSubmission);
+
+  // Settings for the main page
   if (result === 1) video.src = video.src.replace("bg.mp4", "bg.mp4");
   else if (result === 2) video.src = video.src.replace("bg.mp4", "bg1.mp4");
   else if (result === 3) video.src = video.src.replace("bg.mp4", "bg2.mp4");
@@ -50,7 +109,56 @@ window.onload = function () {
       if (!elem.parentElement.classList.contains("disabled")) hoverMusic.play();
     });
   });
-};
+});
+
+// Function to toggle password visibility
+function togglePasswordVisibility() {
+  let passwordField = document.getElementById("passwordField");
+  let toggleIcon = document.querySelector(".toggle-password i");
+
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+    toggleIcon.classList.remove("fa-eye");
+    toggleIcon.classList.add("fa-eye-slash");
+  } else {
+    passwordField.type = "password";
+    toggleIcon.classList.remove("fa-eye-slash");
+    toggleIcon.classList.add("fa-eye");
+  }
+}
+
+// Preloader runs once
+// if (loaded && window.localStorage.getItem("isLoaded") !== "false") {
+//   setTimeout(() => {
+//     // preloaderBtn.disabled = true;
+//   }, 3000);
+
+//   preloaderBtn.addEventListener("click", (event) => {
+//     event.target.innerText = "Loading...";
+//     preloader.classList.add("preloader-none");
+//     setTimeout(() => {
+//       preloader.style.display = "none";
+//       window.localStorage.setItem("isLoaded", false);
+//     }, 5000);
+//   });
+// } else if (window.localStorage.getItem("isLoaded") === "false") {
+//   preloader.style.display = "none";
+// }
+
+// On page load
+// window.onload = function () {
+//   if (result === 1) video.src = video.src.replace("bg.mp4", "bg.mp4");
+//   else if (result === 2) video.src = video.src.replace("bg.mp4", "bg1.mp4");
+//   else if (result === 3) video.src = video.src.replace("bg.mp4", "bg2.mp4");
+
+//   const hoverMusic = new Audio("assets/audio/hover.wav");
+//   hoverMusic.volume = 0.1;
+//   document.querySelectorAll(".owl-nav button i.fa").forEach((elem) => {
+//     elem.addEventListener("click", () => {
+//       if (!elem.parentElement.classList.contains("disabled")) hoverMusic.play();
+//     });
+//   });
+// };
 
 // Slider jQuery Code
 $(document).ready(function () {
@@ -152,71 +260,7 @@ $(document).ready(function () {
   });
 });
 
-/* CACHE VIDEOS */
-// function cacheImage(imageUrl) {
-//   let xhr = new XMLHttpRequest();
-//   xhr.open("GET", imageUrl, true);
-//   xhr.responseType = "blob";
-
-//   xhr.onload = function () {
-//     if (this.status === 200) {
-//       let blob = this.response;
-//       let reader = new FileReader();
-//       reader.onload = function (event) {
-//         // Store image data in local storage
-//         localStorage.setItem("cached_image_" + imageUrl, event.target.result);
-//         // Update the image src attribute
-//         document.getElementById("cached_image").src = event.target.result;
-//       };
-//       reader.readAsDataURL(blob);
-//     }
-//   };
-//   xhr.send();
-// }
-
-// // Function to cache a video
-// function cacheVideo(videoUrl) {
-//   let xhr = new XMLHttpRequest();
-//   xhr.open("GET", videoUrl, true);
-//   xhr.responseType = "blob";
-
-//   xhr.onload = function () {
-//     if (this.status === 200) {
-//       let blob = this.response;
-//       let reader = new FileReader();
-//       reader.onload = function (event) {
-//         // Store video data in local storage
-//         localStorage.setItem("cached_video_" + videoUrl, event.target.result);
-//         // Update the video src attribute
-//         document.getElementById("cached_video").src = event.target.result;
-//       };
-//       reader.readAsDataURL(blob);
-//     }
-//   };
-//   xhr.send();
-// }
-
-// // Function to cache images and videos
-// function cacheMedia() {
-//   // Loop through all image elements
-//   let images = document.getElementsByTagName("img");
-//   for (let i = 0; i < images.length; i++) {
-//     cacheImage(images[i].src);
-//   }
-
-//   // Loop through all video elements
-//   let videos = document.getElementsByTagName("video");
-//   for (let j = 0; j < videos.length; j++) {
-//     cacheVideo(videos[j].src);
-//   }
-//   console.log(images, videos);
-// }
-
-// // Call the function to cache all images and videos on the page
-// cacheMedia();
-
-/* CACHE VIDEOS */
-
+/* CACHE MEDIA */
 // Open or create a database
 let request = indexedDB.open("savedContentDB", 1);
 let db;
