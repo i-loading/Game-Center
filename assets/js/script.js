@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return allImagesLoaded && allVideosLoaded;
   }
-
   // Function to handle password submission
   function handlePasswordSubmission() {
     const password = document.getElementById("passwordField").value;
@@ -90,7 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("passwordField")
     .addEventListener("input", function () {
       const submitButton = document.getElementById("submitButton");
-      submitButton.disabled = this.value.trim() !== "ukrsurt";
+      submitButton.disabled =
+        this.value.trim() !== "ukrsurt" && areAllMediaLoaded();
     });
 
   // Handle submit button click
