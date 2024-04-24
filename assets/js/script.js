@@ -89,8 +89,18 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("passwordField")
     .addEventListener("input", function () {
       const submitButton = document.getElementById("submitButton");
-      submitButton.disabled =
-        this.value.trim() !== "ukrsurt" && areAllMediaLoaded();
+      console.log(
+        "first one",
+        this.value.trim() !== "ukrsurt" && areAllMediaLoaded() === true
+      );
+      setInterval(() => {
+        console.log(
+          "second one",
+          this.value.trim() !== "ukrsurt" && areAllMediaLoaded() === true
+        );
+        submitButton.disabled =
+          this.value.trim() !== "ukrsurt" && areAllMediaLoaded();
+      }, 100);
     });
 
   // Handle submit button click
