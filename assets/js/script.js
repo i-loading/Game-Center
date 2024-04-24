@@ -43,17 +43,20 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to handle password submission
   function handlePasswordSubmission() {
     const password = document.getElementById("passwordField").value;
-
+    const submitButton = document.getElementById("submitButton");
     // Check if the password is correct
     if (password === "ukrsurt") {
       // Check if all media are loaded
       if (areAllMediaLoaded()) {
+        submitButton.disabled = !areAllMediaLoaded();
         // Fade out the preloader gradually
         fadeOutPreloader();
       } else {
         // If media are not loaded, wait for them to load
+        submitButton.disabled = areAllMediaLoaded();
         document.addEventListener("load", function () {
           if (areAllMediaLoaded()) {
+            submitButton.disabled = !areAllMediaLoaded();
             fadeOutPreloader();
           }
         });
@@ -89,9 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("passwordField")
     .addEventListener("input", function () {
       const submitButton = document.getElementById("submitButton");
-
-      submitButton.disabled =
-        !(this.value.trim() !== "ukrsurt" && areAllMediaLoaded()) === false;
+      submitButton.disabled = this.value.trim() !== "ukrsurt";
     });
 
   // Handle submit button click
