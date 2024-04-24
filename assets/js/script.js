@@ -48,15 +48,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (password === "ukrsurt") {
       // Check if all media are loaded
       if (areAllMediaLoaded()) {
-        submitButton.disabled = !areAllMediaLoaded();
         // Fade out the preloader gradually
+        submitButton.disabled = false;
         fadeOutPreloader();
       } else {
         // If media are not loaded, wait for them to load
-        submitButton.disabled = areAllMediaLoaded();
+        submitButton.disabled = true;
         document.addEventListener("load", function () {
           if (areAllMediaLoaded()) {
-            submitButton.disabled = !areAllMediaLoaded();
+            submitButton.disabled = false;
             fadeOutPreloader();
           }
         });
