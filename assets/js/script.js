@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const password = document.getElementById("passwordField").value;
 
     // Check if the password is correct
-    if (password === "a") {
+    if (password === "ukrsurt") {
       // Check if all media are loaded
       if (areAllMediaLoaded()) {
         // Fade out the preloader gradually
@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Enable the submit button
       document.getElementById("submitButton").disabled = false;
+      document.getElementById("submitButton").textContent = "Loading...";
     }
   }
 
@@ -89,26 +90,13 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("passwordField")
     .addEventListener("input", function () {
       const submitButton = document.getElementById("submitButton");
-      submitButton.disabled = this.value.trim() !== "a";
+      submitButton.disabled = this.value.trim() !== "ukrsurt";
     });
 
   // Handle submit button click
   document
     .getElementById("submitButton")
     .addEventListener("click", handlePasswordSubmission);
-
-  // Settings for the main page
-  if (result === 1) video.src = video.src.replace("bg.mp4", "bg.mp4");
-  else if (result === 2) video.src = video.src.replace("bg.mp4", "bg1.mp4");
-  else if (result === 3) video.src = video.src.replace("bg.mp4", "bg2.mp4");
-
-  const hoverMusic = new Audio("assets/audio/hover.wav");
-  hoverMusic.volume = 0.1;
-  document.querySelectorAll(".owl-nav button i.fa").forEach((elem) => {
-    elem.addEventListener("click", () => {
-      if (!elem.parentElement.classList.contains("disabled")) hoverMusic.play();
-    });
-  });
 });
 
 // Function to toggle password visibility
@@ -146,19 +134,19 @@ function togglePasswordVisibility() {
 // }
 
 // On page load
-// window.onload = function () {
-//   if (result === 1) video.src = video.src.replace("bg.mp4", "bg.mp4");
-//   else if (result === 2) video.src = video.src.replace("bg.mp4", "bg1.mp4");
-//   else if (result === 3) video.src = video.src.replace("bg.mp4", "bg2.mp4");
+window.onload = function () {
+  if (result === 1) video.src = video.src.replace("bg.mp4", "bg.mp4");
+  else if (result === 2) video.src = video.src.replace("bg.mp4", "bg1.mp4");
+  else if (result === 3) video.src = video.src.replace("bg.mp4", "bg2.mp4");
 
-//   const hoverMusic = new Audio("assets/audio/hover.wav");
-//   hoverMusic.volume = 0.1;
-//   document.querySelectorAll(".owl-nav button i.fa").forEach((elem) => {
-//     elem.addEventListener("click", () => {
-//       if (!elem.parentElement.classList.contains("disabled")) hoverMusic.play();
-//     });
-//   });
-// };
+  const hoverMusic = new Audio("assets/audio/hover.wav");
+  hoverMusic.volume = 0.1;
+  document.querySelectorAll(".owl-nav button i.fa").forEach((elem) => {
+    elem.addEventListener("click", () => {
+      if (!elem.parentElement.classList.contains("disabled")) hoverMusic.play();
+    });
+  });
+};
 
 // Slider jQuery Code
 $(document).ready(function () {

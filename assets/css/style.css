@@ -311,13 +311,28 @@ i::before {
   .main_preloader h1 span {
     font-size: 70px;
   }
-  .main_preloader button {
-    transform: translate(-50%, 19vh);
-    font-size: 35px;
-    padding: 10px 20px;
+  .main_preloader .input_ctrl {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 20.5vh);
+    display: flex;
   }
-  .main_preloader button:hover {
-    transform: translate(-50%, 19vh) scale(1.05);
+  .main_preloader input {
+    font-size: 30px;
+    padding: 10px 60px 10px 15px;
+  }
+  .password-container span {
+    position: absolute;
+    top: 17px;
+    right: 20px;
+  }
+  .password-container span i::before {
+    font-size: 20px;
+  }
+  .main_preloader button {
+    font-size: 30px;
+    padding: 10px 25px;
+    margin-left: 20px;
   }
 }
 
@@ -338,6 +353,28 @@ i::before {
     width: 40% !important;
   }
 }
+@media screen and (max-width: 1010px) {
+  .main_preloader .input_ctrl {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 18.5vh);
+    flex-direction: column;
+    align-items: center;
+  }
+  .main_preloader h1 {
+    font-size: 30px;
+  }
+  .main_preloader h1 span {
+    font-size: 40px;
+  }
+  .main_preloader button {
+    font-size: 25px;
+    padding: 10px;
+    margin-left: 0;
+    margin-top: 20px;
+  }
+}
+
 /* MEDIA */
 
 .item-one video,
