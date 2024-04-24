@@ -88,17 +88,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Enable the submit button when the password is correct
-  window.onload = function () {
-    document
-      .getElementById("passwordField")
-      .addEventListener("input", function () {
-        const submitButton = document.getElementById("submitButton");
-        console.log(this.value);
-        if (this.value.trim() === "ukrsurt" && areAllMediaLoaded()) {
-          submitButton.disabled = this.value.trim() !== "ukrsurt";
-        }
-      });
-  };
+  document
+    .getElementById("passwordField")
+    .addEventListener("input", function () {
+      const submitButton = document.getElementById("submitButton");
+      console.log(this.value);
+      if (this.value.trim() === "ukrsurt" && areAllMediaLoaded()) {
+        submitButton.disabled = this.value.trim() !== "ukrsurt";
+      }
+    });
 
   // Handle submit button click
   document
