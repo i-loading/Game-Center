@@ -5,7 +5,7 @@ let rand = function (min, max) {
 };
 
 // Функция для вычисления случайного числа из 3х значений
-function clamp(value, min, max){
+function clamp(value, min, max) {
   if (value < min) return min;
   else if (value > max) return max;
   return value;
@@ -59,7 +59,10 @@ let helpers = {
   },
   // Функция для проверки столкновения змейки и яблока
   isCollision(v1, v2) {
-    return Math.floor(v1.x) == Math.floor(v2.x) && Math.floor(v1.y) == Math.floor(v2.y);
+    return (
+      Math.floor(v1.x) == Math.floor(v2.x) &&
+      Math.floor(v1.y) == Math.floor(v2.y)
+    );
   },
   // Функция сборщик мусорных частиц
   garbageCollector() {
@@ -228,7 +231,10 @@ let KEY = {
 // Класс Змейки
 class Snake {
   constructor(i, type) {
-    this.pos = new helpers.Vec(-(cellSize * (cells / 2) - cellSize) + dom_canvas.width / 2, cellSize);
+    this.pos = new helpers.Vec(
+      -(cellSize * (cells / 2) - cellSize) + dom_canvas.width / 2,
+      cellSize
+    );
     this.dir = new helpers.Vec(0, 0);
     this.type = type;
     this.index = i;
@@ -262,15 +268,23 @@ class Snake {
   */
   walls() {
     let { x, y } = this.pos;
-    
+
     // context.setTransform(Горизонтальный масштаб, Горизонтальное скручивание, Вертикальное скручивание, Вертикальный масштаб, Горизонтальный сдвиг, Вертикальный сдвиг);
     CTX.setTransform(1, 0, 0, 1, 0, 0); // reset the transform matrix as it is cumulative
     CTX.clearRect(0, 0, dom_canvas.width, dom_canvas.height); // clear the viewport AFTER the matrix is reset
 
     // Clamp the camera position to the world bounds while centering the camera around the player
-    let camX = clamp(-x + dom_canvas.width / 2, cellSize, window.innerWidth * 2 - dom_canvas.width);
-    let camY = clamp(-y + dom_canvas.height / 2, cellSize, window.innerHeight * 2 - dom_canvas.height);
-    CTX.translate( camX, camY );
+    let camX = clamp(
+      -x + dom_canvas.width / 2,
+      cellSize,
+      window.innerWidth * 2 - dom_canvas.width
+    );
+    let camY = clamp(
+      -y + dom_canvas.height / 2,
+      cellSize,
+      window.innerHeight * 2 - dom_canvas.height
+    );
+    CTX.translate(camX, camY);
 
     // Границы карты
     let flagOpt = false;
@@ -347,8 +361,11 @@ class Snake {
 class Food {
   constructor() {
     this.pos = new helpers.Vec(
-      rand(-window.innerWidth + (cellSize * 3), window.innerWidth - (cellSize * 6)),
-      rand(-window.innerHeight + (cellSize * 3), window.innerHeight - (cellSize * 6))
+      rand(-window.innerWidth + cellSize * 3, window.innerWidth - cellSize * 6),
+      rand(
+        -window.innerHeight + cellSize * 3,
+        window.innerHeight - cellSize * 6
+      )
     );
     this.color = currentHue = `hsl(${~~(Math.random() * 360)},100%,50%)`;
     this.size = cellSize;
@@ -359,22 +376,28 @@ class Food {
     // for (let i = 0; i < count; i++) {
     //   x = rand(-window.innerWidth + (cellSize * 3), window.innerWidth - (cellSize * 6));
     //   y = rand(-window.innerHeight + (cellSize * 3), window.innerHeight - (cellSize * 6));
-      
-      CTX.globalCompositeOperation = "lighter";
-      CTX.shadowBlur = 20;
-      CTX.shadowColor = this.color;
-      CTX.fillStyle = this.color;
-      CTX.fillRect(x, y, this.size, this.size);
-      CTX.globalCompositeOperation = "source-over";
-      CTX.shadowBlur = 0;
-      // this.color = currentHue = `hsl(${helpers.randHue()}, 100%, 50%)`;
+
+    CTX.globalCompositeOperation = "lighter";
+    CTX.shadowBlur = 20;
+    CTX.shadowColor = this.color;
+    CTX.fillStyle = this.color;
+    CTX.fillRect(x, y, this.size, this.size);
+    CTX.globalCompositeOperation = "source-over";
+    CTX.shadowBlur = 0;
+    // this.color = currentHue = `hsl(${helpers.randHue()}, 100%, 50%)`;
     // }
   }
   // Функция для отрисовки последующих яблок на случайной точке на карте
   spawn() {
-    let randX = rand(-window.innerWidth + (cellSize * 3), window.innerWidth - (cellSize * 6));
-    let randY = rand(-window.innerHeight + (cellSize * 3), window.innerHeight - (cellSize * 6));
-    
+    let randX = rand(
+      -window.innerWidth + cellSize * 3,
+      window.innerWidth - cellSize * 6
+    );
+    let randY = rand(
+      -window.innerHeight + cellSize * 3,
+      window.innerHeight - cellSize * 6
+    );
+
     for (let path of snake.history) {
       if (helpers.isCollision(new helpers.Vec(randX, randY), path)) {
         return this.spawn();
@@ -425,7 +448,9 @@ class Particle {
 // Функция для увеличения счета
 function incrementScore() {
   score++;
-  dom_score.innerHTML = `<p>Score</p><h4>${score.toString().padStart(2, "0")}</h4>`;
+  dom_score.innerHTML = `<p>Score</p><h4>${score
+    .toString()
+    .padStart(2, "0")}</h4>`;
 }
 
 // Функция для отрисовки анимации частиц
@@ -444,7 +469,7 @@ function clear() {
 
 // Функция для инициализации главных параметров игры (создание змейки, создание еды, прослушка нажатия стрелок и т.п)
 function initialize() {
-  CTX.imageSmoothingEnabled = false; 
+  CTX.imageSmoothingEnabled = false;
   KEY.listen();
   cellsCount = cells * cells;
   cellSize = W / cells;
@@ -456,17 +481,10 @@ function initialize() {
 
 // Функция для создания "цикла" игры
 function loop() {
-  // clear();
   if (!isGameOver) {
-    // requestID = setTimeout(loop, 1000 / 60);
     if (typeof requestID !== undefined) {
       requestID = window.requestAnimationFrame(loop);
     }
-    // if(food.draw()) {
-    //   window.cancelAnimationFrame(requestID);
-    //   requestID = undefined;
-    // }
-
     snake.update();
     helpers.drawGrid();
     food.draw();
@@ -474,8 +492,6 @@ function loop() {
       p.update();
     }
     helpers.garbageCollector();
-    // helpers.drawMiniMap();
-    // clearTimeout(requestID);
   } else {
     clear();
     gameOver();
@@ -496,10 +512,10 @@ function gameOver() {
   maxScoreTitle.innerText = `MAX SCORE - ${maxScoreLong}`;
   divOver.style.display = "flex";
 
-  resetBtn.onclick = function () { 
+  resetBtn.onclick = function () {
     window.location.reload();
     return false;
-  }
+  };
 }
 
 // Функция обнуления игры, игрового поля и т.п

@@ -10,7 +10,7 @@ let animData = {
   loop: true,
   prerender: true,
   autoplay: true,
-  path: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/LEGO_loader.json",
+  path: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/LEGO_loader_chrisgannon.json",
 };
 let anim = bodymovin.loadAnimation(animData);
 anim.setSpeed(3.4);
@@ -22,7 +22,7 @@ const loaded = window.localStorage.getItem("isLoaded") || true;
 // Preloader runs once
 if (loaded && window.localStorage.getItem("isLoaded") !== "false") {
   setTimeout(() => {
-    preloaderBtn.style.opacity = "1";
+    // preloaderBtn.disabled = true;
   }, 3000);
 
   preloaderBtn.addEventListener("click", (event) => {
@@ -151,3 +151,131 @@ $(document).ready(function () {
     });
   });
 });
+
+/* CACHE VIDEOS */
+// function cacheImage(imageUrl) {
+//   let xhr = new XMLHttpRequest();
+//   xhr.open("GET", imageUrl, true);
+//   xhr.responseType = "blob";
+
+//   xhr.onload = function () {
+//     if (this.status === 200) {
+//       let blob = this.response;
+//       let reader = new FileReader();
+//       reader.onload = function (event) {
+//         // Store image data in local storage
+//         localStorage.setItem("cached_image_" + imageUrl, event.target.result);
+//         // Update the image src attribute
+//         document.getElementById("cached_image").src = event.target.result;
+//       };
+//       reader.readAsDataURL(blob);
+//     }
+//   };
+//   xhr.send();
+// }
+
+// // Function to cache a video
+// function cacheVideo(videoUrl) {
+//   let xhr = new XMLHttpRequest();
+//   xhr.open("GET", videoUrl, true);
+//   xhr.responseType = "blob";
+
+//   xhr.onload = function () {
+//     if (this.status === 200) {
+//       let blob = this.response;
+//       let reader = new FileReader();
+//       reader.onload = function (event) {
+//         // Store video data in local storage
+//         localStorage.setItem("cached_video_" + videoUrl, event.target.result);
+//         // Update the video src attribute
+//         document.getElementById("cached_video").src = event.target.result;
+//       };
+//       reader.readAsDataURL(blob);
+//     }
+//   };
+//   xhr.send();
+// }
+
+// // Function to cache images and videos
+// function cacheMedia() {
+//   // Loop through all image elements
+//   let images = document.getElementsByTagName("img");
+//   for (let i = 0; i < images.length; i++) {
+//     cacheImage(images[i].src);
+//   }
+
+//   // Loop through all video elements
+//   let videos = document.getElementsByTagName("video");
+//   for (let j = 0; j < videos.length; j++) {
+//     cacheVideo(videos[j].src);
+//   }
+//   console.log(images, videos);
+// }
+
+// // Call the function to cache all images and videos on the page
+// cacheMedia();
+
+/* CACHE VIDEOS */
+
+// Open or create a database
+let request = indexedDB.open("savedContentDB", 1);
+let db;
+
+request.onerror = function (event) {
+  console.error("Database error: " + event.target.errorCode);
+};
+
+request.onsuccess = function (event) {
+  db = event.target.result;
+  retrieveAndSetContent();
+};
+
+request.onupgradeneeded = function (event) {
+  let db = event.target.result;
+  let objectStore = db.createObjectStore("content", { keyPath: "id" });
+  objectStore.createIndex("images", "images", { unique: false });
+  objectStore.createIndex("videos", "videos", { unique: false });
+};
+
+function storeContent(images, videos) {
+  let transaction = db.transaction(["content"], "readwrite");
+  let objectStore = transaction.objectStore("content");
+
+  let content = { id: 1, images: images, videos: videos };
+  objectStore.put(content);
+}
+
+function retrieveAndSetContent() {
+  let transaction = db.transaction(["content"]);
+  let objectStore = transaction.objectStore("content");
+  let request = objectStore.get(1);
+
+  request.onerror = function (event) {
+    console.error("Error retrieving content: " + event.target.errorCode);
+  };
+
+  request.onsuccess = function (event) {
+    let savedContent = request.result;
+    if (savedContent) {
+      savedContent.images.forEach((src, index) => {
+        document.querySelectorAll("img")[index].src = src;
+      });
+
+      savedContent.videos.forEach((src, index) => {
+        document.querySelectorAll("video")[index].src = src;
+      });
+    } else {
+      saveContent();
+    }
+    saveContent();
+  };
+}
+
+function saveContent() {
+  let images = Array.from(document.querySelectorAll("img"), (img) => img.src);
+  let videos = Array.from(
+    document.querySelectorAll("video"),
+    (video) => video.src
+  );
+  storeContent(images, videos);
+}
